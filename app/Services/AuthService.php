@@ -14,8 +14,8 @@ class AuthService
         $user = User::where('email', $credentials['email'])->first();
         
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return ValidationException::withMessages([
-                'message' => ['The provided credentials are incorrect.'],
+            throw ValidationException::withMessages([
+                'email' => ['Credenciais inválidas.'],
             ]);
         }
 
