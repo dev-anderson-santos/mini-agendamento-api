@@ -1,6 +1,6 @@
 # Mini Agendamento - API
 
-API REST de agendamento (serviços, profissionais e agendamentos) em Laravel, com autenticação por token. O projeto está em desenvolvimento: a autenticação já está pronta e testada, e o domínio de agendamento é a próxima etapa.
+API REST de agendamento de salas (salas, horários e agendamentos) em Laravel, com autenticação por token. O projeto está em desenvolvimento: a autenticação já está pronta e testada, o modelo de dados do agendamento está definido e os endpoints são a próxima etapa.
 
 ## Stack
 
@@ -14,7 +14,8 @@ API REST de agendamento (serviços, profissionais e agendamentos) em Laravel, co
 
 - [x] Autenticação: registro, login e logout com tokens (Sanctum)
 - [x] Testes automatizados da autenticação
-- [ ] Serviços, profissionais e agendamentos
+- [x] Modelo de dados: usuários, salas, horários e agendamentos (migrations)
+- [ ] Models, endpoints de salas, horários e agendamentos
 - [ ] Regras de negócio: horário duplicado, antecedência mínima para cancelar e horário fora do expediente
 - [ ] Lembrete de agendamento por fila
 - [ ] Docker, CI e documentação OpenAPI
@@ -90,4 +91,7 @@ curl http://localhost:8000/api/user \
 - **Mensagem genérica no login.** A resposta não diz se o erro foi no email ou na senha, para não revelar quais emails estão cadastrados.
 - **Limite de tentativas no login** (`throttle:5,1`) contra força bruta.
 - **Respostas de erro sempre em JSON** nas rotas `/api/*`, sem redirecionar visitantes não autenticados.
+- **Chaves primárias em UUID** em todas as tabelas, inclusive nos tokens do Sanctum (`uuidMorphs`).
+- **Horário duplicado barrado no banco.** Um índice único parcial em `(room_id, date, hour_id)` vale só para agendamentos com status `scheduled`, então a regra se mantém mesmo com requisições simultâneas, e um horário cancelado pode ser reservado de novo. Esse tipo de índice existe no SQLite e no PostgreSQL.
+- **Cancelamento por status**, com `cancelled_at`, em vez de soft delete, para manter o histórico.
 - **Testes de feature com Pest**, cobrindo o caminho feliz e as recusas (dados inválidos, email duplicado, senha fraca, token revogado).
