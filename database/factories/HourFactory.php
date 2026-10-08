@@ -18,7 +18,7 @@ class HourFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'hour' => fake()->unique()->time('H:00'),
         ];
     }
 }
