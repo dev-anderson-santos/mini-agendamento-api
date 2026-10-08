@@ -12,7 +12,7 @@ it('criar registro de usuário', function () {
     ];
 
     $response = $this->postJson('/api/register', $payload);
-    
+
     $response->assertCreated();
     $this->assertDatabaseHas('users', [
         'email' => $payload['email'],
@@ -31,7 +31,7 @@ it('recusa email já cadastrado', function () {
         'password' => 'senha-segura-123',
         'password_confirmation' => 'senha-segura-123',
     ];
-    
+
     $this->postJson('/api/register', $payload)
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['email']);
@@ -61,7 +61,7 @@ it('recusa cadastro com confirmação de senha diferente', function () {
     ]);
 
     $response->assertUnprocessable()
-    ->assertJsonValidationErrors(['password']);
+        ->assertJsonValidationErrors(['password']);
 
 });
 
@@ -81,7 +81,7 @@ it('recusa cadastro com senha fraca', function () {
     ]);
 
     $response->assertUnprocessable()
-    ->assertJsonValidationErrors(['password']);
+        ->assertJsonValidationErrors(['password']);
 
 });
 
@@ -101,7 +101,7 @@ it('recusa cadastro com email inválido', function () {
     ]);
 
     $response->assertUnprocessable()
-    ->assertJsonValidationErrors(['email']);
+        ->assertJsonValidationErrors(['email']);
 
 });
 
@@ -122,7 +122,7 @@ it('recusa cadastro com campo desconhecido', function () {
     ]);
 
     $response->assertUnprocessable()
-    ->assertJsonValidationErrors(['unknown_field']);
+        ->assertJsonValidationErrors(['unknown_field']);
 
 });
 
