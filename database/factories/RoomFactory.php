@@ -18,7 +18,16 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->words(2, true),
+            'description' => fake()->sentence(),
+            'active' => true,
         ];
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'active' => false,
+        ]);
     }
 }
